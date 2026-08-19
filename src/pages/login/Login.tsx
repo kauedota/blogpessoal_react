@@ -63,21 +63,20 @@ function Login() {
                             onChange={(e: ChangeEvent<HTMLInputElement>) => atualizarEstado(e)}
                         />
                     </div>
-                    {
-                        isLoading ? (
-                            <ClipLoader
-                                color="#ffffff"
-                                size={24}
-                            />
-                        ) : (
-                            <span>Entrar</span>
-                        )
-                    }
                     <button
                         type='submit'
                         className="rounded bg-indigo-400 flex justify-center
                                    hover:bg-indigo-900 text-white w-1/2 py-2">
-                        <span>Entrar</span>
+                        {
+                            isLoading ? (
+                                <ClipLoader
+                                    color="#ffffff"
+                                    size={24}
+                                />
+                            ) : (
+                                <span>Entrar</span>
+                            )
+                        }
                     </button>
 
                     <hr className="border-slate-800 w-full" />
