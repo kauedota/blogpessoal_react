@@ -1,6 +1,7 @@
 import type Tema from "./Tema";
 import type Usuario from "./Usuario";
 
+// Modelo que representa uma Postagem do blog, espelhando o objeto retornado pela API
 export default interface Postagem {
     id: number;
 titulo: string;

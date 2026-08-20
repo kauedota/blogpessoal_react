@@ -1,3 +1,4 @@
+// Página de cadastro de novos usuários
 import { useEffect, useState, type ChangeEvent, type SyntheticEvent } from "react";
 import { useNavigate } from "react-router-dom";
 import type Usuario from "../../models/Usuario";
@@ -28,6 +29,7 @@ function Cadastro() {
   // tratar o efeito colateral do sucesso do cadastro
   //redirecionar para pagina de login
 
+  // Assim que o usuario.id deixa de ser 0 (cadastro concluído), redireciona para o login
   useEffect(() => {
     if (usuario.id !== 0){
       retornar();
@@ -65,6 +67,7 @@ function Cadastro() {
     setIsLoading(true);
 
     try {
+      // Envia os dados do novo usuário para a API; setUsuario é atualizado com a resposta (incluindo id)
       await cadastrarUsuario(`/usuarios/cadastrar`, usuario, setUsuario);
       alert("Usuario cadastrado com sucesso!");
 

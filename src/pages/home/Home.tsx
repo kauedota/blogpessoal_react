@@ -1,3 +1,4 @@
+// Página inicial exibida após o login, com uma breve mensagem de boas-vindas
 function Home() {
   return (
     // Conteiner Principal

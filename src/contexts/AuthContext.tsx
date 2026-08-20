@@ -1,3 +1,4 @@
+// Contexto global de autenticação: guarda o usuário logado e expõe login/logout para toda a aplicação
 import { createContext, useState, type ReactNode } from "react";
 import type UsuarioLogin from "../models/UsuarioLogin";
 import axios from "axios";
@@ -44,9 +45,11 @@ export function AuthProvider({ children }: AuthProviderProps) {
         setIsLoading(true);
 
         try {
+            // Chama o serviço de login; em caso de sucesso, setUsuario é atualizado com os dados + token
             await login(`/usuarios/logar`, usuarioLogin, setUsuario);
             alert("Usuário Autenticado com sucesso!");
         } catch (error) {
+            // Trata erros vindos da API (ex: credenciais inválidas) separadamente de erros de conexão
             if (axios.isAxiosError(error) && error.response) {
                 alert(`Erro ao autenticar o usuário: ${error.response.status}`);
                 console.log('Resposta da API: ', error.message);
@@ -58,6 +61,7 @@ export function AuthProvider({ children }: AuthProviderProps) {
         }
     }
     // Implementar a função handleLogout (desconectar o Usuario)
+    // Zera o estado usuario, removendo os dados e o token de autenticação
     function handleLogout() {
         setUsuario({
             id: 0,
@@ -70,6 +74,7 @@ export function AuthProvider({ children }: AuthProviderProps) {
 
     }
     return (
+        // Disponibiliza usuario, handleLogin, handleLogout e isLoading para todos os componentes filhos
         <AuthContext.Provider value={{ usuario, handleLogin, handleLogout, isLoading }}>
             {children}
         </AuthContext.Provider>

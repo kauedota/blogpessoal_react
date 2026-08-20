@@ -1,7 +1,9 @@
+// Rodapé exibido em todas as páginas, com links para redes sociais
 import { FacebookLogo, InstagramLogo, LinkedinLogo } from "@phosphor-icons/react"
 
 function Footer() {
 
+    // Ano atual, usado para exibir o texto de copyright
     let data = new Date().getFullYear()
 
     return (

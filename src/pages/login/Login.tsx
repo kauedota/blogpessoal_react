@@ -1,3 +1,4 @@
+// Página de login: coleta usuário e senha e delega a autenticação à AuthContext
 import { useContext, useEffect, useState, type ChangeEvent, type SyntheticEvent } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import type UsuarioLogin from "../../models/UsuarioLogin";
@@ -6,19 +7,30 @@ import { ClipLoader } from "react-spinners";
 
 function Login() {
 
+    // Objeto responsável por redirecionar o usuário para outra rota
     const navigate = useNavigate();
 
-    const [usuarioLogin, setUsuarioLogin] = useState<UsuarioLogin>({} as UsuarioLogin);
+    // Estado responsável por guardar os dados digitados no formulário de login
+    const [usuarioLogin, setUsuarioLogin] = useState<UsuarioLogin>({
+        id: 0,
+        nome: '',
+        usuario: '',
+        senha: '',
+        foto: '',
+        token: '',
+    });
 
     // Consumir os estados e funções da context (AuthContext)
     // usando o hook useContext (Consumer)
     const { usuario, handleLogin, isLoading } = useContext(AuthContext);
+    // Assim que o usuario possuir um token válido (login concluído), redireciona para a home
     useEffect(() => {
         if (usuario.token !== "") {
             navigate("/home");
         }
     }, [usuario])
 
+    // Atualiza o estado usuarioLogin conforme o usuário digita nos campos do formulário
     function atualizarEstado(e: ChangeEvent<HTMLInputElement>) {
         setUsuarioLogin({
             ...usuarioLogin,
@@ -26,6 +38,7 @@ function Login() {
         })
     }
 
+    // Impede o recarregamento da página e dispara a autenticação via AuthContext
     function login(e: SyntheticEvent<HTMLFormElement>) {
         e.preventDefault();
         handleLogin(usuarioLogin);
