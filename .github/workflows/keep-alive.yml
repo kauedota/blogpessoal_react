@@ -11,4 +11,5 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - name: Ping da API
-        run: curl -s -o /dev/null -w "Status: %{http_code}\n" https://blogpessoal-7t26.onrender.com/ --max-time 60
+        run: |
+          curl -s -o /dev/null -w "Status: %{http_code}\n" https://blogpessoal-7t26.onrender.com/ --max-time 60
