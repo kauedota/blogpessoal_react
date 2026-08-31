@@ -1,2 +1,22 @@
 /* Importa as classes utilitárias do TailwindCSS usadas em todo o projeto */
 @import "tailwindcss";
+
+/* Paleta "Rosa queimado + carvão" do Blog Pessoal */
+@theme {
+  --color-primary: #BE5A6E;
+  --color-primary-light: #D98A9A;
+  --color-primary-dark: #2B2B2E;
+  --color-secondary: #2B2B2E;
+  --color-secondary-dark: #1A1A1C;
+  --color-cream: #FFF7F5;
+  --color-cream-dark: #FCE8E4;
+  --color-dark: #2B2B2E;
+  --color-line: #E8CFC9;
+  --color-danger: #B33A3A;
+  --color-danger-dark: #8F2C2C;
+}
+
+body {
+  background-color: var(--color-cream);
+  color: var(--color-dark);
+}

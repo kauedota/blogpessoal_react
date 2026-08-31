@@ -3,7 +3,8 @@ import { useNavigate, useParams } from "react-router-dom"
 import { AuthContext } from "../../../contexts/AuthContext"
 import type Postagem from "../../../models/Postagem"
 import { buscar, deletar } from "../../../services/Service"
-import { ClipLoader } from "react-spinners"
+import { ToastAlerta } from "../../../utils/ToastAlerta"
+import Spinner from "../../spinner/Spinner"
 
 // Página de confirmação de exclusão de uma Postagem
 function DeletarPostagem() {
@@ -34,7 +35,7 @@ function DeletarPostagem() {
 
     useEffect(() => {
         if (token === '') {
-            alert('Você precisa estar logado')
+            ToastAlerta('Você precisa estar logado', 'info')
             navigate('/')
         }
     }, [token])
@@ -54,13 +55,13 @@ function DeletarPostagem() {
                     'Authorization': token
                 }
             })
-            alert('Postagem apagada com sucesso')
+            ToastAlerta('Postagem apagada com sucesso', 'sucesso')
             retornar()
         } catch (error: any) {
             if (error.toString().includes('401')) {
                 handleLogout()
             } else {
-                alert('Erro ao deletar a postagem.')
+                ToastAlerta('Erro ao deletar a postagem.', 'erro')
             }
         }
 
@@ -80,25 +81,22 @@ function DeletarPostagem() {
             </p>
             <div className='border flex flex-col rounded-2xl overflow-hidden justify-between'>
                 <header
-                    className='py-2 px-6 bg-indigo-600 text-white font-bold text-2xl'>
+                    className='py-2 px-6 bg-primary text-white font-bold text-2xl'>
                     {postagem.titulo}
                 </header>
-                <p className='p-8 text-3xl bg-slate-200 h-full'>{postagem.texto}</p>
+                <p className='p-8 text-3xl bg-cream-dark h-full'>{postagem.texto}</p>
                 <div className='flex'>
                     <button
-                        className='text-slate-100 bg-red-400 hover:bg-red-600 w-full py-2'
+                        className='text-white bg-danger hover:bg-danger-dark w-full py-2'
                         onClick={retornar}>
                         Não
                     </button>
                     <button
-                        className='w-full text-slate-100 bg-indigo-400 hover:bg-indigo-600 flex items-center justify-center'
+                        className='w-full text-white bg-primary hover:bg-primary-dark flex items-center justify-center'
                         onClick={deletarPostagem}>
 
                         {isLoading ?
-                            <ClipLoader
-                                color="#ffffff"
-                                size={24}
-                            /> :
+                            <Spinner className="h-5 w-5 text-white" /> :
                             <span>Sim</span>
                         }
 

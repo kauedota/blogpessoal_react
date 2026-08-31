@@ -3,7 +3,8 @@ import { useNavigate, useParams } from "react-router-dom"
 import { AuthContext } from "../../contexts/AuthContext"
 import type Tema from "../../models/Tema"
 import { buscar, deletar } from "../../services/Service"
-import { ClipLoader } from "react-spinners"
+import { ToastAlerta } from "../../utils/ToastAlerta"
+import Spinner from "../../components/spinner/Spinner"
 
 // Página de confirmação de exclusão de um Tema
 function DeletarTema() {
@@ -34,7 +35,7 @@ function DeletarTema() {
 
     useEffect(() => {
         if (token === '') {
-            alert('Você precisa estar logado')
+            ToastAlerta('Você precisa estar logado', 'info')
             navigate('/')
         }
     }, [token])
@@ -54,13 +55,13 @@ function DeletarTema() {
                     'Authorization': token
                 }
             })
-            alert('Tema apagado com sucesso')
+            ToastAlerta('Tema apagado com sucesso', 'sucesso')
             retornar()
         } catch (error: any) {
             if (error.toString().includes('401')) {
                 handleLogout()
             } else {
-                alert('Erro ao deletar o tema.')
+                ToastAlerta('Erro ao deletar o tema.', 'erro')
             }
         }
 
@@ -80,25 +81,22 @@ function DeletarTema() {
             </p>
             <div className='border flex flex-col rounded-2xl overflow-hidden justify-between'>
                 <header
-                    className='py-2 px-6 bg-indigo-600 text-white font-bold text-2xl'>
+                    className='py-2 px-6 bg-primary text-white font-bold text-2xl'>
                     Tema
                 </header>
-                <p className='p-8 text-3xl bg-slate-200 h-full'>{tema.descricao}</p>
+                <p className='p-8 text-3xl bg-cream-dark h-full'>{tema.descricao}</p>
                 <div className='flex'>
                     <button
-                        className='text-slate-100 bg-red-400 hover:bg-red-600 w-full py-2'
+                        className='text-white bg-danger hover:bg-danger-dark w-full py-2'
                         onClick={retornar}>
                         Não
                     </button>
                     <button
-                        className='w-full text-slate-100 bg-indigo-400 hover:bg-indigo-600 flex items-center justify-center'
+                        className='w-full text-white bg-primary hover:bg-primary-dark flex items-center justify-center'
                         onClick={deletarTema}>
 
                         {isLoading ?
-                            <ClipLoader
-                                color="#ffffff"
-                                size={24}
-                            /> :
+                            <Spinner className="h-5 w-5 text-white" /> :
                             <span>Sim</span>
                         }
 

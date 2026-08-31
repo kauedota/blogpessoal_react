@@ -1,9 +1,10 @@
 import { useState, useContext, useEffect, type ChangeEvent, type FormEvent } from "react";
 import { useNavigate, useParams } from "react-router-dom";
-import { ClipLoader } from "react-spinners";
+import Spinner from "../../components/spinner/Spinner";
 import { AuthContext } from "../../contexts/AuthContext";
 import type Tema from "../../models/Tema";
 import { buscar, atualizar, cadastrar } from "../../services/Service";
+import { ToastAlerta } from "../../utils/ToastAlerta";
 
 // Formulário usado tanto para cadastrar quanto para editar um Tema
 function FormTema() {
@@ -30,7 +31,7 @@ function FormTema() {
 
     useEffect(() => {
         if (token === '') {
-            alert('Você precisa estar logado!');
+            ToastAlerta('Você precisa estar logado!', 'info');
             navigate('/login');
         }
     }, [token]);
@@ -61,12 +62,12 @@ function FormTema() {
                 await atualizar(`/temas`, tema, setTema, {
                     headers: { Authorization: token },
                 });
-                alert('Tema atualizado com sucesso!');
+                ToastAlerta('Tema atualizado com sucesso!', 'sucesso');
             } catch (error: any) {
                 if (error.toString().includes('401')) {
                     handleLogout();
                 } else {
-                    alert('Erro ao atualizar o tema.');
+                    ToastAlerta('Erro ao atualizar o tema.', 'erro');
                 }
             }
         } else {
@@ -74,12 +75,12 @@ function FormTema() {
                 await cadastrar(`/temas`, tema, setTema, {
                     headers: { Authorization: token },
                 });
-                alert('Tema cadastrado com sucesso!');
+                ToastAlerta('Tema cadastrado com sucesso!', 'sucesso');
             } catch (error: any) {
                 if (error.toString().includes('401')) {
                     handleLogout();
                 } else {
-                    alert('Erro ao cadastrar o tema.');
+                    ToastAlerta('Erro ao cadastrar o tema.', 'erro');
                 }
             }
         }
@@ -103,19 +104,16 @@ function FormTema() {
                         type="text"
                         placeholder="Descreva aqui seu tema"
                         name='descricao'
-                        className="border-2 border-slate-700 rounded p-2"
+                        className="border-2 border-line rounded p-2"
                         value={tema.descricao}
                         onChange={(e: ChangeEvent<HTMLInputElement>) => atualizarEstado(e)}
                     />
                 </div>
                 <button
-                    className="rounded text-slate-100 bg-indigo-400 hover:bg-indigo-800 w-1/2 py-2 mx-auto flex justify-center"
+                    className="rounded text-white bg-primary hover:bg-primary-dark w-1/2 py-2 mx-auto flex justify-center"
                     type="submit">
                     {isLoading ?
-                        <ClipLoader
-                            color="#ffffff"
-                            size={24}
-                        /> :
+                        <Spinner className="h-5 w-5 text-white" /> :
                         <span>{id === undefined ? 'Cadastrar' : 'Atualizar'}</span>
                     }
 

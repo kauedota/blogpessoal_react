@@ -32,7 +32,7 @@ function formatarData(data: string): string {
 function CardPostagem({ postagem }: CardPostagemProps) {
     return (
         <div className='border flex flex-col rounded-2xl overflow-hidden justify-between'>
-            <header className='py-2 px-6 bg-indigo-800 text-white font-bold flex items-center gap-3'>
+            <header className='py-2 px-6 bg-primary text-white font-bold flex items-center gap-3'>
                 <img
                     src={postagem.usuario?.foto}
                     alt={postagem.usuario?.nome}
@@ -40,7 +40,7 @@ function CardPostagem({ postagem }: CardPostagemProps) {
                 />
                 <span className='text-lg'>{postagem.usuario?.nome}</span>
             </header>
-            <div className='p-8 bg-slate-200 h-full flex flex-col gap-2'>
+            <div className='p-8 bg-cream-dark h-full flex flex-col gap-2'>
                 <p className='text-2xl font-bold'>{postagem.titulo}</p>
                 <p className='text-lg'>{postagem.texto}</p>
                 <p className='text-sm'>Tema: {postagem.tema?.descricao}</p>
@@ -49,12 +49,12 @@ function CardPostagem({ postagem }: CardPostagemProps) {
 
             <div className='flex'>
                 <Link to={`/editarpostagem/${postagem.id}`}
-                    className='w-full text-slate-100 bg-indigo-400 hover:bg-indigo-800
+                    className='w-full text-white bg-primary hover:bg-primary-dark
           flex items-center justify-center py-2'>
                     <button>Editar</button>
                 </Link>
 
-                <Link to={`/deletarpostagem/${postagem.id}`} className='text-slate-100 bg-red-400 hover:bg-red-700 w-full
+                <Link to={`/deletarpostagem/${postagem.id}`} className='text-white bg-danger hover:bg-danger-dark w-full
           flex items-center justify-center'>
                     <button>Deletar</button>
                 </Link>

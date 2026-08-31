@@ -1,11 +1,13 @@
 // Página inicial exibida após o login, com uma breve mensagem de boas-vindas
+import { Link } from "react-router-dom";
+
 function Home() {
   return (
     // Conteiner Principal
-    <div className="bg-indigo-900 flex justify-center">
+    <div className="bg-primary-dark flex justify-center">
            
             {/* Seção com duas colunas */}
-        <div className="container grid grid-cols-1 md:grid-cols-2 text-white">
+        <div className="container mx-auto grid grid-cols-1 md:grid-cols-2 text-white">
  
             {/* Conteúdo de texto */}
             <div className="flex flex-col gap-4 items-center justify-center py-4">
@@ -18,9 +20,9 @@ function Home() {
                 </p>
  
             <div className="flex justify-around gap-4">
-                <div className="rounded-lg border-2 border-solid border-white py-2 px-4">
+                <Link to="/cadastrarpostagem" className="rounded-lg border-2 border-solid border-white py-2 px-4 hover:bg-white hover:text-primary-dark transition-colors">
                     Nova Postagem
-                </div>
+                </Link>
             </div>
             </div>
  

@@ -1,10 +1,11 @@
 import { useState, useContext, useEffect, type ChangeEvent, type FormEvent } from "react";
 import { useNavigate, useParams } from "react-router-dom";
-import { ClipLoader } from "react-spinners";
+import Spinner from "../../spinner/Spinner";
 import { AuthContext } from "../../../contexts/AuthContext";
 import type Postagem from "../../../models/Postagem";
 import type Tema from "../../../models/Tema";
 import { buscar, atualizar, cadastrar } from "../../../services/Service";
+import { ToastAlerta } from "../../../utils/ToastAlerta";
 
 // Formulário usado tanto para cadastrar quanto para editar uma Postagem
 function FormPostagem() {
@@ -45,7 +46,7 @@ function FormPostagem() {
 
     useEffect(() => {
         if (token === '') {
-            alert('Você precisa estar logado!');
+            ToastAlerta('Você precisa estar logado!', 'info');
             navigate('/');
         }
     }, [token]);
@@ -96,12 +97,12 @@ function FormPostagem() {
                 await atualizar(`/postagens`, postagem, setPostagem, {
                     headers: { Authorization: token },
                 });
-                alert('Postagem atualizada com sucesso!');
+                ToastAlerta('Postagem atualizada com sucesso!', 'sucesso');
             } catch (error: any) {
                 if (error.toString().includes('401')) {
                     handleLogout();
                 } else {
-                    alert('Erro ao atualizar a postagem.');
+                    ToastAlerta('Erro ao atualizar a postagem.', 'erro');
                 }
             }
         } else {
@@ -109,12 +110,12 @@ function FormPostagem() {
                 await cadastrar(`/postagens`, postagem, setPostagem, {
                     headers: { Authorization: token },
                 });
-                alert('Postagem cadastrada com sucesso!');
+                ToastAlerta('Postagem cadastrada com sucesso!', 'sucesso');
             } catch (error: any) {
                 if (error.toString().includes('401')) {
                     handleLogout();
                 } else {
-                    alert('Erro ao cadastrar a postagem.');
+                    ToastAlerta('Erro ao cadastrar a postagem.', 'erro');
                 }
             }
         }
@@ -138,7 +139,7 @@ function FormPostagem() {
                         type="text"
                         placeholder="Título"
                         name='titulo'
-                        className="border-2 border-slate-700 rounded p-2"
+                        className="border-2 border-line rounded p-2"
                         value={postagem.titulo || ''}
                         onChange={(e: ChangeEvent<HTMLInputElement>) => atualizarEstado(e)}
                     />
@@ -148,7 +149,7 @@ function FormPostagem() {
                     <textarea
                         placeholder="Escreva aqui o texto da sua postagem"
                         name='texto'
-                        className="border-2 border-slate-700 rounded p-2"
+                        className="border-2 border-line rounded p-2"
                         value={postagem.texto || ''}
                         onChange={(e: ChangeEvent<HTMLTextAreaElement>) => atualizarEstado(e)}
                     />
@@ -158,7 +159,7 @@ function FormPostagem() {
                     <select
                         name="tema"
                         id="tema"
-                        className="border-2 border-slate-700 rounded p-2"
+                        className="border-2 border-line rounded p-2"
                         value={postagem.tema?.id ?? ''}
                         onChange={(e: ChangeEvent<HTMLSelectElement>) => atualizarTema(e)}
                     >
@@ -169,13 +170,10 @@ function FormPostagem() {
                     </select>
                 </div>
                 <button
-                    className="rounded text-slate-100 bg-indigo-400 hover:bg-indigo-800 w-1/2 py-2 mx-auto flex justify-center"
+                    className="rounded text-white bg-primary hover:bg-primary-dark w-1/2 py-2 mx-auto flex justify-center"
                     type="submit">
                     {isLoading ?
-                        <ClipLoader
-                            color="#ffffff"
-                            size={24}
-                        /> :
+                        <Spinner className="h-5 w-5 text-white" /> :
                         <span>{id === undefined ? 'Cadastrar' : 'Atualizar'}</span>
                     }
 

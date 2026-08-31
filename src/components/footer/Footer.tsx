@@ -1,15 +1,20 @@
-// Rodapé exibido em todas as páginas, com links para redes sociais
 import { FacebookLogo, InstagramLogo, LinkedinLogo } from "@phosphor-icons/react"
-
+import { useContext, type ReactNode } from "react";
+import { AuthContext } from "../../contexts/AuthContext";
+ 
 function Footer() {
-
-    // Ano atual, usado para exibir o texto de copyright
+ 
     let data = new Date().getFullYear()
-
-    return (
-        <>
-            <div className="flex justify-center bg-indigo-900 text-white">
-                <div className="container flex flex-col items-center py-4">
+ 
+    const { usuario } = useContext(AuthContext);
+    const token = usuario.token
+ 
+    let component: ReactNode
+ 
+    if (token !== '') {
+        component = (
+            <div className="flex justify-center bg-primary-dark text-white">
+                <div className="container mx-auto flex flex-col items-center pt-4 pb-8">
                     <p className='text-xl font-bold'>
                         Blog Pessoal Generation | Copyright: {data}
                     </p>
@@ -21,8 +26,15 @@ function Footer() {
                     </div>
                 </div>
             </div>
+ 
+        )
+    }
+ 
+    return (
+        <>
+            {component}
         </>
     )
 }
-
+ 
 export default Footer

@@ -4,8 +4,9 @@ import { useNavigate } from "react-router-dom";
 import { AuthContext } from "../../contexts/AuthContext";
 import type Tema from "../../models/Tema";
 import { buscar } from "../../services/Service";
+import { ToastAlerta } from "../../utils/ToastAlerta";
 import CardTema from "../cardtema/CardTema"
-import { SyncLoader } from "react-spinners";
+import Spinner from "../../components/spinner/Spinner";
 
 function ListaTemas() {
 
@@ -24,7 +25,7 @@ function ListaTemas() {
     // Se não houver token (usuário não logado), redireciona para a página de login
     useEffect(() => {
         if (token === '') {
-            alert('Você precisa estar logado!')
+            ToastAlerta('Você precisa estar logado!', 'info')
             navigate('/')
         }
     }, [token])
@@ -55,13 +56,12 @@ function ListaTemas() {
     return (
         <>
             {isLoading && (
-                <SyncLoader
-                    color="#312e81"
-                    size={32}
-                />
+                <div className="flex justify-center my-8">
+                    <Spinner className="h-14 w-14 text-primary" />
+                </div>
             )}
             <div className="flex justify-center w-full my-4">
-                <div className="container flex flex-col">
+                <div className="container mx-auto flex flex-col">
 
                     {(!isLoading && temas.length === 0) && (
                         <span className="text-3xl text-center my-8">
