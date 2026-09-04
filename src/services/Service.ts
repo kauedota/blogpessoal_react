@@ -9,15 +9,15 @@ const AVISO_SERVIDOR_DELAY_MS = 4000;
 // Instância do axios pré-configurada com a URL base da API do Blog Pessoal
 const api = axios.create({
   baseURL: import.meta.env.VITE_API_URL,
-  // O Render (plano free) "dorme" a API por inatividade; a primeira requisição
-  // após esse período pode levar até ~1 minuto para acordar o servidor
-  timeout: 60000,
+  // O Render (plano free) "dorme" a API por inatividade; um cold start completo
+  // (Spring Boot + banco Postgres serverless também "dormindo") pode levar perto de 3 minutos
+  timeout: 200000,
 })
 
 // Avisa o usuário quando uma requisição demora, sinal de que o servidor está acordando
 api.interceptors.request.use((config) => {
   const avisoTimeoutId = setTimeout(() => {
-    toast.info("Iniciando servidor, isso pode levar até 1 minuto na primeira requisição", {
+    toast.info("Iniciando servidor, isso pode levar alguns minutos na primeira requisição", {
       toastId: AVISO_SERVIDOR_ID,
       position: "top-right",
       theme: "colored",
