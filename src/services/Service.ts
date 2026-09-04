@@ -1,9 +1,50 @@
 import axios from "axios";
+import { toast } from "react-toastify";
+
+// Id fixo do toast de aviso, evita duplicar o alerta em requisições concorrentes
+const AVISO_SERVIDOR_ID = "aviso-servidor-iniciando";
+// Só avisa se a resposta demorar mais que isso (requisição "normal" responde bem mais rápido)
+const AVISO_SERVIDOR_DELAY_MS = 4000;
 
 // Instância do axios pré-configurada com a URL base da API do Blog Pessoal
 const api = axios.create({
-  baseURL: import.meta.env.VITE_API_URL
+  baseURL: import.meta.env.VITE_API_URL,
+  // O Render (plano free) "dorme" a API por inatividade; a primeira requisição
+  // após esse período pode levar até ~1 minuto para acordar o servidor
+  timeout: 60000,
 })
+
+// Avisa o usuário quando uma requisição demora, sinal de que o servidor está acordando
+api.interceptors.request.use((config) => {
+  const avisoTimeoutId = setTimeout(() => {
+    toast.info("Iniciando servidor, isso pode levar até 1 minuto na primeira requisição", {
+      toastId: AVISO_SERVIDOR_ID,
+      position: "top-right",
+      theme: "colored",
+      autoClose: false,
+      closeOnClick: true,
+    })
+  }, AVISO_SERVIDOR_DELAY_MS)
+
+  ;(config as any).avisoTimeoutId = avisoTimeoutId
+  return config
+})
+
+function limparAvisoServidor(config?: any) {
+  clearTimeout(config?.avisoTimeoutId)
+  toast.dismiss(AVISO_SERVIDOR_ID)
+}
+
+api.interceptors.response.use(
+  (response) => {
+    limparAvisoServidor(response.config)
+    return response
+  },
+  (error) => {
+    limparAvisoServidor(error.config)
+    return Promise.reject(error)
+  }
+)
 
 // Função  cadastrar Usuario
 
